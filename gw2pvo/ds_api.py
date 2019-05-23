@@ -3,8 +3,8 @@ import logging
 import time
 import requests
 
-__author__ = "Michaël Hompus"
-__copyright__ = "Copyright 2018, Michaël Hompus"
+__author__ = "Michael Hompus"
+__copyright__ = "Copyright 2018, Michael Hompus"
 __license__ = "MIT"
 __email__ = "michael@hompus.nl"
 
@@ -41,11 +41,13 @@ class DarkSkyApi:
         if latitude is None or longitude is None:
             return None
 
+        local_tz = datetime.now().tzinfo
+
         data = {
             'apiKey' : self.api_key,
             'latitude' : latitude,
             'longitude' : longitude,
-            'date' : date.strftime('%Y-%m-%d') + 'T00:00:00',
+            'date' : local_tz.localize(date),
         }
 
         url = "https://api.darksky.net/forecast/{apiKey}/{latitude},{longitude},{date}?units=si&exclude=minutely,currently,daily,alerts,flags".format(**data)
